@@ -115,9 +115,16 @@ public class ArrayList<E> implements List<E>, RandomAccess {
 
     @Override
     public E remove(int index) throws IndexOutOfBoundsException {
-        boolean found = false;
-        if ()
-        return found;
+        E removed = elements[index];
+        E[] newArray = (E[]) new Object[size() - 1];
+        for (int i = 0; i < index; i++) {
+            newArray[i] = elements[i];
+        }
+        for (int i = index; i < newArray.length; i++) {
+            newArray[i] = elements[i + 1];
+        }
+        elements = newArray;
+        return removed;
     }
 
     @Override
