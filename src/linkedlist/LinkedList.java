@@ -126,8 +126,11 @@ public class LinkedList<E> implements List<E> {
     }
 
     @Override
-    public E set(int index, E element) {
-        throw new UnsupportedOperationException("Implemented as part of class exercise");
+    public E set(int index, E element) throws IndexOutOfBoundsException{
+        Node<E> previousElem = walkTo(index - 1);
+        Node<E> nextElem = walkTo(index);
+        previousElem.next = new Node<E>(element, nextElem);
+        return nextElem.value;
     }
 
     @Override
