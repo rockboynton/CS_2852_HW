@@ -50,7 +50,7 @@ public class LinkedList<E> implements List<E> {
     }
 
     private Node<E> walkTo(int index) {
-        if(index<0 || index>size()) {
+        if(index<0 || index>=size()) {
             throw new IndexOutOfBoundsException("Size: " + size() + " Index: " + index);
         }
         Node<E> walker = head;
@@ -79,17 +79,13 @@ public class LinkedList<E> implements List<E> {
 
     @Override
     public int indexOf(Object target) {
-        int indexFound = -1;
-        Node<E> elem = head;
-        for(int i = 0; indexFound < 0 && i < size(); ++i) {
-            if((target!=null && target.equals(elem.value)) || target == elem.value) {
-                indexFound = i;
-            } else {
-                elem = elem.next;
+        int index = -1;
+        for(int i = 0; i<size() && index<0; ++i) {
+            if(target==get(i) || (target!=null && target.equals(get(i)))) {
+                index = i;
             }
         }
-        return indexFound;
-
+        return index;
     }
 
     @Override
@@ -118,19 +114,18 @@ public class LinkedList<E> implements List<E> {
     @Override
     public boolean remove(Object target) {
         int index = indexOf(target);
-        if(index >= 0) {
+        if(index>=0) {
             remove(index);
         }
-        return index >=0 ;
-
+        return index>=0;
     }
 
     @Override
-    public E set(int index, E element) throws IndexOutOfBoundsException{
-        Node<E> previousElem = walkTo(index - 1);
-        Node<E> nextElem = walkTo(index);
-        previousElem.next = new Node<E>(element, nextElem);
-        return nextElem.value;
+    public E set(int index, E element) {
+        Node<E> node = walkTo(index);
+        E oldValue = node.value;
+        node.value = element;
+        return oldValue;
     }
 
     @Override
@@ -149,13 +144,14 @@ public class LinkedList<E> implements List<E> {
 
     @Override
     public Object[] toArray() {
-        E[] elements = (E[]) new Object[size()];
+        int size = size();
+        Object[] array = new Object[size];
         Node<E> walker = head;
-        for (int i = 0; walker != null; i++) {
-            elements[i] = walker.value;
+        for(int i = 0; i<size; ++i) {
+            array[i] = walker.value;
             walker = walker.next;
         }
-        return elements;
+        return array;
     }
 
     @Override
@@ -215,4 +211,3 @@ public class LinkedList<E> implements List<E> {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
-
