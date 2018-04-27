@@ -52,7 +52,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
         boolean isChanged = false;
         int comparison = value.compareTo(subroot.value);
         if(comparison>0) {
-            if(subroot.rKid==null) {
+            if(subroot.rKid == null) {
                 subroot.rKid = new Node<>(value);
                 isChanged = true;
             } else {
@@ -90,7 +90,9 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     @Override
     public String toString() {
-        return toString(root);
+        String result = toString(root);
+        result = result.length() < 3 ? "" : result.substring(0, result.length() - 2);
+        return "[" + result + "]";
     }
 
     private String toString(Node<E> root) {
@@ -104,6 +106,42 @@ public class BinarySearchTree<E extends Comparable<E>> {
             } else {
                 treeStr = "" + root.value;
             }
+        }
+        return treeStr;
+    }
+
+    public String toString2() {
+        String result = toString2(root);
+        result = result.length() < 3 ? "" : result.substring(0, result.length() - 2);
+        return "[" + result + "]";
+    }
+
+    private String toString2(Node<E> root) {
+        String treeStr = "";
+        if (root != null) {
+            if (root.lKid != null) {
+                treeStr += toString2(root.lKid) + ", ";
+            }
+            if (root.rKid != null) {
+                treeStr += root.value + ", " + toString2(root.rKid);
+            }
+            else {
+                treeStr += root.value  + ", ";
+            }
+        }
+        return treeStr;
+    }
+
+    public String toString3() {
+        String result = toString3(root);
+        result = result.length() < 3 ? "" : result.substring(0, result.length() - 2);
+        return "[" + result + "]";
+    }
+
+    private String toString3(Node<E> root) {
+        String treeStr = "";
+        if (root != null) {
+            treeStr = toString3(root.lKid) + ", " + root.value + ", " + toString3(root.rKid);
         }
         return treeStr;
     }
@@ -138,6 +176,22 @@ public class BinarySearchTree<E extends Comparable<E>> {
             }
         }
         return min;
+    }
+
+    public int countLeaves() {
+        return countLeaves(root);
+    }
+
+    private int countLeaves(Node<E> root) {
+        int count = 0;
+        if (root != null) {
+            if (root.lKid == null && root.rKid == null) {
+                count++;
+            } else {
+                count = countLeaves(root.lKid) + countLeaves(root.rKid);
+            }
+        }
+        return count;
     }
 }
 
